@@ -1,53 +1,24 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>User Dashboard</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f4f4f4;
-        }
-        .dashboard-container {
-            background-color: white;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-        .profile-picture {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            margin-bottom: 1rem;
-        }
-        button {
-            padding: 0.5rem 1rem;
-            background-color: #f44336;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-top: 1rem;
-        }
-        button:hover {
-            background-color: #d32f2f;
-        }
-    </style>
+    @vite('resources/css/app.css')
 </head>
-<body>
-    <div class="dashboard-container">
-        <h2>Welcome to Your Dashboard</h2>
-        <img id="profilePicture" class="profile-picture" src="" alt="Profile Picture">
-        <p>Name: <span id="userName"></span></p>
-        <p>Email: <span id="userEmail"></span></p>
-        <button id="logoutButton">Logout</button>
+<body class="bg-gray-100 dark:bg-gray-900 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 max-w-md mx-auto">
+            <h2 class="text-2xl font-semibold mb-6 text-center text-gray-800 dark:text-white">Welcome to Your Dashboard</h2>
+            <div class="flex flex-col items-center mb-6">
+                <img id="profilePicture" class="w-24 h-24 rounded-full mb-4" src="" alt="Profile Picture">
+                <p class="text-gray-700 dark:text-gray-300">Name: <span id="userName" class="font-semibold"></span></p>
+                <p class="text-gray-700 dark:text-gray-300">Email: <span id="userEmail" class="font-semibold"></span></p>
+            </div>
+            <button id="logoutButton" class="w-full py-2 px-4 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-75 transition duration-300 ease-in-out">
+                Logout
+            </button>
+        </div>
     </div>
 
     <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
@@ -73,7 +44,7 @@
             if (user) {
                 document.getElementById('userName').textContent = user.displayName;
                 document.getElementById('userEmail').textContent = user.email;
-                document.getElementById('profilePicture').src = user.photoURL;
+                document.getElementById('profilePicture').src = user.photoURL || 'https://via.placeholder.com/150';
             } else {
                 window.location.href = '/login'; // Redirect to login if not signed in
             }
@@ -87,6 +58,24 @@
                 console.error('Sign Out Error', error);
             });
         });
+
+        // Ensure dark mode is applied
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+
+        // Optional: Add a toggle for dark/light mode
+        function toggleDarkMode() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.theme = 'light';
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.theme = 'dark';
+            }
+        }
     </script>
 </body>
 </html>
