@@ -38,13 +38,13 @@
 <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
 <script>
     const firebaseConfig = {
-        apiKey: "AIzaSyB3IQx0Wo1otQj6p1p3UxzxnDerzF73bcg",
-        authDomain: "fiets-laadpaal-59d4a.firebaseapp.com",
-        projectId: "fiets-laadpaal-59d4a",
-        storageBucket: "fiets-laadpaal-59d4a.appspot.com",
-        messagingSenderId: "169148185400",
-        appId: "1:169148185400:web:356ec740a45a1ef39ddfcd",
-        measurementId: "G-7V11X159EJ"
+        apiKey: "{{ config('services.firebase.api_key') }}",
+        authDomain: "{{ config('services.firebase.auth_domain') }}",
+        projectId: "{{ config('services.firebase.project_id') }}",
+        storageBucket: "{{ config('services.firebase.storage_bucket') }}",
+        messagingSenderId: "{{ config('services.firebase.messaging_sender_id') }}",
+        appId: "{{ config('services.firebase.app_id') }}",
+        measurementId: "{{ config('services.firebase.measurement_id') }}"
     };
 
     // Initialize Firebase
