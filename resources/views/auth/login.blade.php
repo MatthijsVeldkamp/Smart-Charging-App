@@ -53,10 +53,6 @@
     function signInWithGoogle() {
         const provider = new firebase.auth.GoogleAuthProvider();
         firebase.auth().signInWithPopup(provider)
-            .then((result) => {
-                const user = result.user;
-                return user.getIdToken();
-            })
             .then((idToken) => {
                 console.log('ID Token:', idToken); // Log the token for debugging
                 return fetch('/firebase-login', {
