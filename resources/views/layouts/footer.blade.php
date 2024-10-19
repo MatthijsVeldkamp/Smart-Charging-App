@@ -3,7 +3,7 @@
     <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
       <div>
         <div class="text-teal-600 dark:text-teal-300">
-          <img src="{{ Storage::url('images/Icon logo.png') }}" alt="{{ config('app.name', 'Laravel') }} Logo" class="h-12 w-auto">
+          <img src="{{ ('images/Icon logo.png') }}" alt="{{ config('app.name', 'Laravel') }} Logo" class="h-12 w-auto">
         </div>
         <p class="mt-4 max-w-xs text-gray-700 dark:text-gray-300">
           Korte beschrijving van uw bedrijf of website. Dit kan een slogan of een korte missie zijn.
