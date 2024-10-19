@@ -9,14 +9,15 @@
             <p class="text-gray-700 dark:text-gray-300">Name: <span id="userName" class="font-semibold">{{ Auth::user()->name }}</span></p>
             <p class="text-gray-700 dark:text-gray-300">Email: <span id="userEmail" class="font-semibold">{{ Auth::user()->email }}</span></p>
         </div>
-        <button id="logoutButton" class="w-full py-2 px-4 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-75 transition duration-300 ease-in-out">
-            Logout
-        </button>
     </div>
 </div>
 @endsection
 
 @section('scripts')
+<!-- Add these script tags to include Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+
 <script>
     // Your web app's Firebase configuration
     const firebaseConfig = {
@@ -32,23 +33,58 @@
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
 
+    // Function to update user info
+    function updateUserInfo(user) {
+        console.log('Updating user info:', user);
+        
+        document.getElementById('userName').textContent = user.displayName || '{{ Auth::user()->name }}';
+        document.getElementById('userEmail').textContent = user.email || '{{ Auth::user()->email }}';
+        
+        let photoURL = user.photoURL || '{{ Auth::user()->profile_picture }}' || '{{ Auth::user()->google_avatar }}' || 'https://via.placeholder.com/150';
+        let source = 'Default';
+
+        if (user.photoURL) {
+            source = 'Firebase';
+        } else if ('{{ Auth::user()->profile_picture }}') {
+            source = 'Laravel Profile';
+        } else if ('{{ Auth::user()->google_avatar }}') {
+            source = 'Google Avatar';
+        }
+
+        document.getElementById('profilePicture').src = photoURL;
+        document.getElementById('pictureSource').textContent = source;
+
+        console.log('Profile picture URL:', photoURL);
+        console.log('Profile picture source:', source);
+    }
+
     firebase.auth().onAuthStateChanged(function(user) {
+        console.log('Firebase Auth State Changed:', user);
         if (user) {
-            document.getElementById('userName').textContent = user.displayName;
-            document.getElementById('userEmail').textContent = user.email;
-            document.getElementById('profilePicture').src = user.photoURL || 'https://via.placeholder.com/150';
+            updateUserInfo(user);
         } else {
-            window.location.href = '/login'; // Redirect to login if not signed in
+            console.log('No user signed in, redirecting to login');
+            window.location.href = '/login';
         }
     });
 
     document.getElementById('logoutButton').addEventListener('click', function() {
         firebase.auth().signOut().then(function() {
             console.log('Signed Out');
-            window.location.href = '/login'; // Redirect to login after logout
+            window.location.href = '/login';
         }).catch(function(error) {
             console.error('Sign Out Error', error);
         });
+    });
+
+    // Immediate check for profile picture
+    window.addEventListener('load', function() {
+        const img = document.getElementById('profilePicture');
+        console.log('Initial profile picture src:', img.src);
+        img.onerror = function() {
+            console.error('Failed to load profile picture:', this.src);
+            this.src = 'https://via.placeholder.com/150';
+        };
     });
 </script>
 @endsection
