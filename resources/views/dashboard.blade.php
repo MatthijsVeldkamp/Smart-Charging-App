@@ -5,9 +5,9 @@
     <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 max-w-md mx-auto">
         <h2 class="text-2xl font-semibold mb-6 text-center text-gray-800 dark:text-white">Welcome to Your Dashboard</h2>
         <div class="flex flex-col items-center mb-6">
-            <img id="profilePicture" class="w-24 h-24 rounded-full mb-4" src="{{ Auth::user()->profile_photo_url }}" alt="Profile Picture">
-            <p class="text-gray-700 dark:text-gray-300">Name: <span id="userName" class="font-semibold"></span></p>
-            <p class="text-gray-700 dark:text-gray-300">Email: <span id="userEmail" class="font-semibold"></span></p>
+            <img id="profilePicture" class="w-24 h-24 rounded-full mb-4 object-cover" src="{{ Auth::user()->profile_picture ?? Auth::user()->google_avatar ?? 'https://via.placeholder.com/150' }}" alt="Profile Picture">
+            <p class="text-gray-700 dark:text-gray-300">Name: <span id="userName" class="font-semibold">{{ Auth::user()->name }}</span></p>
+            <p class="text-gray-700 dark:text-gray-300">Email: <span id="userEmail" class="font-semibold">{{ Auth::user()->email }}</span></p>
         </div>
         <button id="logoutButton" class="w-full py-2 px-4 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-75 transition duration-300 ease-in-out">
             Logout
