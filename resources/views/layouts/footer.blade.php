@@ -64,34 +64,21 @@
       </div>
 
       <div>
-        <p class="font-medium text-gray-900 dark:text-gray-100">Company</p>
+        <p class="font-medium text-gray-900 dark:text-gray-100">Bedrijfsinformatie</p>
         <ul class="mt-6 space-y-4 text-sm">
-          <li><a href="#" class="text-gray-700 dark:text-gray-300 transition hover:opacity-75">About</a></li>
-          <li><a href="#" class="text-gray-700 dark:text-gray-300 transition hover:opacity-75">Meet the Team</a></li>
-          <li><a href="#" class="text-gray-700 dark:text-gray-300 transition hover:opacity-75">Accounts Review</a></li>
+          <li><a href="{{ route('about') }}" class="text-gray-700 dark:text-gray-300 transition hover:opacity-75">Over</a></li>
         </ul>
       </div>
 
       <div>
-        <p class="font-medium text-gray-900 dark:text-gray-100">Helpful Links</p>
+        <p class="font-medium text-gray-900 dark:text-gray-100">Hulpzame links</p>
         <ul class="mt-6 space-y-4 text-sm">
-          <li><a href="#" class="text-gray-700 dark:text-gray-300 transition hover:opacity-75">Contact</a></li>
-          <li><a href="#" class="text-gray-700 dark:text-gray-300 transition hover:opacity-75">FAQs</a></li>
-          <li><a href="#" class="text-gray-700 dark:text-gray-300 transition hover:opacity-75">Live Chat</a></li>
-        </ul>
-      </div>
-
-      <div>
-        <p class="font-medium text-gray-900 dark:text-gray-100">Legal</p>
-        <ul class="mt-6 space-y-4 text-sm">
-          <li><a href="#" class="text-gray-700 dark:text-gray-300 transition hover:opacity-75">Accessibility</a></li>
-          <li><a href="#" class="text-gray-700 dark:text-gray-300 transition hover:opacity-75">Returns Policy</a></li>
-          <li><a href="#" class="text-gray-700 dark:text-gray-300 transition hover:opacity-75">Refund Policy</a></li>
-          <li><a href="#" class="text-gray-700 dark:text-gray-300 transition hover:opacity-75">Hiring Statistics</a></li>
+          <li><a href="{{ route('welcome') }}" class="text-gray-700 dark:text-gray-300 transition hover:opacity-75">Thuispagina</a></li>
+          <li><a href="{{ route('dashboard') }}" class="text-gray-700 dark:text-gray-300 transition hover:opacity-75">Dashboard</a></li>
+          <li><a href="{{ route('login') }}" class="text-gray-700 dark:text-gray-300 transition hover:opacity-75">Inlogpagina</a></li>
         </ul>
       </div>
     </div>
-
     <p class="text-xs text-gray-500 dark:text-gray-400">&copy; {{ date('Y') }} {{ config('app.name', 'Laravel') }}. All rights reserved.</p>
   </div>
 </footer>
