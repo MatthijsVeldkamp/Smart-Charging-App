@@ -38,6 +38,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/manage', [ManageController::class, 'index'])->name('manage');
     Route::get('/sockets', [SocketController::class, 'index'])->name('sockets');
+    Route::post('/sockets', [SocketController::class, 'store'])->name('sockets.store');
+    Route::post('/sockets/{socket}/toggle', [SocketController::class, 'togglePower'])->name('sockets.toggle');
+    Route::get('/sockets/{socket}/data', [SocketController::class, 'getData'])->name('sockets.data');
     Route::get('/locations', [LocationController::class, 'index'])->name('locations');
     Route::get('/invoices', [InvoiceController::class, 'index'])->name('invoices');
 });
@@ -45,4 +48,3 @@ Route::middleware('auth')->group(function () {
 Route::post('/firebase-login', [FirebaseAuthController::class, 'login'])->name('firebase.login');
 
 require __DIR__.'/auth.php';
-
