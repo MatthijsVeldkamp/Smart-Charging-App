@@ -43,6 +43,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/sockets/{socket}/data', [SocketController::class, 'getData'])->name('sockets.data');
     Route::get('/locations', [LocationController::class, 'index'])->name('locations');
     Route::get('/invoices', [InvoiceController::class, 'index'])->name('invoices');
+    Route::get('/sockets/{socket}', [SocketController::class, 'show'])->name('sockets.show');
+    Route::post('/sockets/{socket}/add-smart-meter', [SocketController::class, 'addSmartMeter'])->name('sockets.addSmartMeter');
 });
 
 Route::post('/firebase-login', [FirebaseAuthController::class, 'login'])->name('firebase.login');

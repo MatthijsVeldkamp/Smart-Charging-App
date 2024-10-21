@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Socket;
+use App\Models\SmartMeter;
 use Illuminate\Support\Facades\Http;
+use App\Http\Controllers\SocketController;
 
 class SocketController extends Controller
 {
@@ -48,5 +50,23 @@ class SocketController extends Controller
         }
 
         return back()->with('error', 'Kon gegevens niet ophalen.');
+    }
+
+    public function addSmartMeter(Request $request, Socket $socket)
+    {
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'ip_address' => 'required|ip',
+        ]);
+
+        $smartMeter = new SmartMeter($validatedData);
+        $socket->smartMeter()->save($smartMeter);
+
+        return redirect()->route('sockets.show', $socket)->with('success', 'Slimme meter toegevoegd.');
+    }
+
+    public function show(Socket $socket)
+    {
+        return view('sockets.show', compact('socket'));
     }
 }
