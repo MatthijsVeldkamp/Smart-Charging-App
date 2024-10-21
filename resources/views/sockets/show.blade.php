@@ -60,7 +60,7 @@
                             <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
                                 <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">Socket Verwijderen</h3>
                                 <div class="mt-2">
-                                    <p class="text-lg text-gray-500">Weet u zeker dat u de socket: {{ $socket->name }} wilt verwijderen?</p>
+                                    <p class="text-lg text-gray-500">Weet u zeker dat u de socket: "{{ $socket->name }}" wilt verwijderen?</p>
                                 </div>
                             </div>
                         </div>
