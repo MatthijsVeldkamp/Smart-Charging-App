@@ -51,3 +51,4 @@ Route::middleware('auth')->group(function () {
 Route::post('/firebase-login', [FirebaseAuthController::class, 'login'])->name('firebase.login');
 
 require __DIR__.'/auth.php';
+
