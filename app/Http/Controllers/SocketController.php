@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Models\Socket;
 use App\Models\SmartMeter;
 use Illuminate\Support\Facades\Http;
-use App\Http\Controllers\SocketController;
 
 class SocketController extends Controller
 {
@@ -25,7 +24,15 @@ class SocketController extends Controller
 
         Socket::create($validatedData);
 
-        return redirect()->route('sockets.index')->with('success', 'Socket toegevoegd.');
+        return redirect()->route('sockets')->with('success', 'Socket toegevoegd.');
+    }
+
+    public function show(Socket $socket)
+    {
+        $status = $this->getPowerStatus($socket);
+        $measurements = $this->getMeasurements($socket);
+
+        return view('sockets.show', compact('socket', 'status', 'measurements'));
     }
 
     public function togglePower(Socket $socket)
@@ -33,23 +40,16 @@ class SocketController extends Controller
         $response = Http::get("http://{$socket->ip_address}/cm?cmnd=Power%20TOGGLE");
         
         if ($response->successful()) {
-            return back()->with('success', 'Socket status gewijzigd.');
+            $newStatus = $this->getPowerStatus($socket);
+            return redirect()->route('sockets.show', $socket)->with('status', "Socket is now $newStatus");
         }
 
-        return back()->with('error', 'Kon socket status niet wijzigen.');
+        return back()->with('error', 'Failed to toggle power');
     }
 
     public function getData(Socket $socket)
     {
-        $response = Http::get("http://{$socket->ip_address}/cm?cmnd=Status%208");
-        
-        if ($response->successful()) {
-            $data = $response->json();
-            // Verwerk de gegevens zoals nodig
-            return view('sockets.data', compact('socket', 'data'));
-        }
-
-        return back()->with('error', 'Kon gegevens niet ophalen.');
+        return response()->json($this->getMeasurements($socket));
     }
 
     public function addSmartMeter(Request $request, Socket $socket)
@@ -62,11 +62,46 @@ class SocketController extends Controller
         $smartMeter = new SmartMeter($validatedData);
         $socket->smartMeter()->save($smartMeter);
 
-        return redirect()->route('sockets.show', $socket)->with('success', 'Slimme meter toegevoegd.');
+        return redirect()->route('sockets', $socket)->with('success', 'Slimme meter toegevoegd.');
     }
 
-    public function show(Socket $socket)
+    private function getPowerStatus(Socket $socket)
     {
-        return view('sockets.show', compact('socket'));
+        $response = Http::get("http://{$socket->ip_address}/cm?cmnd=Power");
+        
+        if ($response->successful()) {
+            $data = $response->json();
+            return $data['POWER'] ?? 'unknown';
+        }
+
+        return 'unknown';
+    }
+
+    private function getMeasurements(Socket $socket)
+    {
+        $response = Http::get("http://{$socket->ip_address}/cm?cmnd=Status%208");
+        
+        if ($response->successful()) {
+            $data = $response->json();
+            return [
+                'power' => $data['StatusSNS']['ENERGY']['Power'] ?? 'N/A',
+                'voltage' => $data['StatusSNS']['ENERGY']['Voltage'] ?? 'N/A',
+                'current' => $data['StatusSNS']['ENERGY']['Current'] ?? 'N/A',
+                'total_energy' => $data['StatusSNS']['ENERGY']['Total'] ?? 'N/A',
+            ];
+        }
+
+        return [
+            'power' => 'N/A',
+            'voltage' => 'N/A',
+            'current' => 'N/A',
+            'total_energy' => 'N/A',
+        ];
+    }
+
+    public function destroy(Socket $socket)
+    {
+        $socket->delete();
+        return redirect()->route('sockets')->with('success', 'Socket succesvol verwijderd.');
     }
 }

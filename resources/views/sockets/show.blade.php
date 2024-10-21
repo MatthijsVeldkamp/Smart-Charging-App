@@ -9,25 +9,48 @@
         <p class="text-gray-600 dark:text-gray-400 mb-2">Naam: {{ $socket->name }}</p>
         <p class="text-gray-600 dark:text-gray-400 mb-4">IP Adres: {{ $socket->ip_address }}</p>
         
-        @if($socket->smartMeter)
-            <h3 class="text-lg font-semibold mb-2 text-gray-800 dark:text-white">Slimme Meter</h3>
-            <p class="text-gray-600 dark:text-gray-400 mb-2">Naam: {{ $socket->smartMeter->name }}</p>
-            <p class="text-gray-600 dark:text-gray-400 mb-2">IP Adres: {{ $socket->smartMeter->ip_address }}</p>
-        @else
-            <h3 class="text-lg font-semibold mb-2 text-gray-800 dark:text-white">Voeg Slimme Meter Toe</h3>
-            <form action="{{ route('sockets.addSmartMeter', $socket) }}" method="POST" class="space-y-4">
-                @csrf
-                <div>
-                    <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Naam</label>
-                    <input type="text" name="name" id="name" required class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-700 dark:text-white">
-                </div>
-                <div>
-                    <label for="ip_address" class="block text-sm font-medium text-gray-700 dark:text-gray-300">IP Adres</label>
-                    <input type="text" name="ip_address" id="ip_address" required class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-700 dark:text-white">
-                </div>
-                <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Slimme Meter Toevoegen</button>
-            </form>
-        @endif
+        <h3 class="text-lg font-semibold mb-2 text-gray-800 dark:text-white">Status</h3>
+        <p class="text-gray-600 dark:text-gray-400 mb-4">Huidige status: <span id="status" class="font-bold">{{ $status }}</span></p>
+        
+        <form action="{{ route('sockets.toggle', $socket) }}" method="POST" class="mb-4">
+            @csrf
+            <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                Toggle Aan/Uit
+            </button>
+        </form>
+
+        <h3 class="text-lg font-semibold mb-2 text-gray-800 dark:text-white">Metingen</h3>
+        <div id="measurements">
+            <p class="text-gray-600 dark:text-gray-400">Vermogen: <span id="power">{{ $measurements['power'] }} W</span></p>
+            <p class="text-gray-600 dark:text-gray-400">Spanning: <span id="voltage">{{ $measurements['voltage'] }} V</span></p>
+            <p class="text-gray-600 dark:text-gray-400">Stroom: <span id="current">{{ $measurements['current'] }} A</span></p>
+            <p class="text-gray-600 dark:text-gray-400">Totaal Energieverbruik: <span id="total_energy">{{ $measurements['total_energy'] }} kWh</span></p>
+        </div>
+
+        <button id="refreshData" class="mt-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50">
+            Ververs Gegevens
+        </button>
+
+        <form action="{{ route('sockets.destroy', $socket) }}" method="POST" class="mt-4" onsubmit="return confirm('Weet je zeker dat je deze socket wilt verwijderen?');">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">
+                Verwijder Socket
+            </button>
+        </form>
     </div>
 </div>
+
+<script>
+document.getElementById('refreshData').addEventListener('click', function() {
+    fetch('{{ route('sockets.data', $socket) }}')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('power').textContent = data.power + ' W';
+            document.getElementById('voltage').textContent = data.voltage + ' V';
+            document.getElementById('current').textContent = data.current + ' A';
+            document.getElementById('total_energy').textContent = data.total_energy + ' kWh';
+        });
+});
+</script>
 @endsection
