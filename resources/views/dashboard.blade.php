@@ -2,12 +2,31 @@
 
 @section('content')
 <div class="container mx-auto px-4 py-8">
-    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 max-w-md mx-auto">
-        <h2 class="text-2xl font-semibold mb-6 text-center text-gray-800 dark:text-white">Welcome to Your Dashboard</h2>
-        <div class="flex flex-col items-center mb-6">
-            <img id="profilePicture" class="w-24 h-24 rounded-full mb-4 object-cover" src="{{ Auth::user()->profile_picture ?? Auth::user()->google_avatar ?? 'https://via.placeholder.com/150' }}" alt="Profile Picture">
-            <p class="text-gray-700 dark:text-gray-300">Name: <span id="userName" class="font-semibold">{{ Auth::user()->name }}</span></p>
-            <p class="text-gray-700 dark:text-gray-300">Email: <span id="userEmail" class="font-semibold">{{ Auth::user()->email }}</span></p>
+    <h1 class="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-6">Dashboard</h1>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Grafiek 1 -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+            <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Grafiek 1</h2>
+            <div class="aspect-w-16 aspect-h-9 bg-gray-200 dark:bg-gray-700 rounded">
+                <!-- Hier komt de eerste grafiek -->
+            </div>
+        </div>
+
+        <!-- Grafiek 2 -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+            <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Grafiek 2</h2>
+            <div class="aspect-w-16 aspect-h-9 bg-gray-200 dark:bg-gray-700 rounded">
+                <!-- Hier komt de tweede grafiek -->
+            </div>
+        </div>
+
+        <!-- Grafiek 3 -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+            <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Grafiek 3</h2>
+            <div class="aspect-w-16 aspect-h-9 bg-gray-200 dark:bg-gray-700 rounded">
+                <!-- Hier komt de derde grafiek -->
+            </div>
         </div>
     </div>
 </div>

@@ -1,14 +1,26 @@
 <header x-data="{ open: false, showLogoutModal: false }" class="bg-white dark:bg-gray-800 shadow">
-    <nav class="container mx-auto px-6 py-3">
+    <nav class="container mx-auto px-6 py-4">
         <div class="flex justify-between items-center">
-            <div>
+            <!-- App Name - Left -->
+            <div class="flex-shrink-0">
                 <a href="{{ url('/') }}" class="text-lg font-semibold text-gray-800 dark:text-white">
                     {{ config('app.name', 'Laravel') }}
                 </a>
             </div>
+
+            <!-- Navigation Links - Center -->
+            @auth
+            <div class="hidden md:flex items-center justify-center space-x-12">
+                <a href="{{ route('sockets') }}" class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Sockets</a>
+                <a href="{{ route('locations') }}" class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Locaties</a>
+                <a href="{{ route('invoices') }}" class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Facturen</a>
+            </div>
+            @endauth
+
+            <!-- User Menu - Right -->
             <div class="flex items-center">
                 <div x-data="{ open: false }" class="relative">
-                    <button @click="open = !open" type="button" class="inline-flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-200" aria-expanded="false">
+                    <button @click="open = !open" type="button" class="inline-flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900 dark:text-gray-200" aria-expanded="false">
                         <span>{{ Auth::check() ? Auth::user()->name : 'Profile' }}</span>
                         <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                             <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
@@ -29,10 +41,9 @@
                                 @auth
                                     <div class="group relative flex gap-x-6 rounded-lg p-4 hover:bg-gray-50">
                                         <div class="mt-1 flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
-                                        <svg class="h-6 w-6 text-gray-600 group-hover:text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="m6.75 7.5 3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0 0 21 18V6a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 6v12a2.25 2.25 0 0 0 2.25 2.25Z" />
-                                        </svg>
-
+                                            <svg class="h-6 w-6 text-gray-600 group-hover:text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="m6.75 7.5 3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0 0 21 18V6a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 6v12a2.25 2.25 0 0 0 2.25 2.25Z" />
+                                            </svg>
                                         </div>
                                         <div>
                                             <a href="{{ route('dashboard') }}" class="font-semibold text-gray-900">
@@ -50,7 +61,7 @@
                                             </svg>
                                         </div>
                                         <div>
-                                            <a href="#" class="font-semibold text-gray-900">
+                                            <a href="{{ route('settings') }}" class="font-semibold text-gray-900">
                                                 Settings
                                                 <span class="absolute inset-0"></span>
                                             </a>
@@ -90,7 +101,27 @@
                 </div>
             </div>
         </div>
+
+        <!-- Mobile menu button -->
+        <div class="md:hidden flex items-center mt-4">
+            <button @click="open = !open" class="text-gray-500 hover:text-gray-600 focus:outline-none focus:text-gray-600" aria-label="toggle menu">
+                <svg viewBox="0 0 24 24" class="h-6 w-6 fill-current">
+                    <path fill-rule="evenodd" d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z"></path>
+                </svg>
+            </button>
+        </div>
     </nav>
+
+    <!-- Mobile menu -->
+    <div x-show="open" class="md:hidden">
+        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+            @auth
+                <a href="{{ route('sockets') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Sockets</a>
+                <a href="{{ route('locations') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Locaties</a>
+                <a href="{{ route('invoices') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Facturen</a>
+            @endauth
+        </div>
+    </div>
 
     <!-- Logout Confirmation Modal -->
     <div x-show="showLogoutModal" class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
