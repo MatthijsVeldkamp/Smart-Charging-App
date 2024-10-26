@@ -20,7 +20,7 @@
             <!-- User Menu - Right -->
             <div class="flex items-center">
                 <div x-data="{ open: false }" class="relative">
-                    <button @click="open = !open" type="button" class="inline-flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900 dark:text-gray-200" aria-expanded="false">
+                    <button @click="open = !open" type="button" class="inline-flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-100 dark:text-gray-100" aria-expanded="false">
                         <span>{{ Auth::check() ? Auth::user()->name : 'Profile' }}</span>
                         <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                             <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
