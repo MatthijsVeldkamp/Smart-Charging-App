@@ -13,7 +13,6 @@
             <div class="hidden md:flex items-center justify-center space-x-12">
                 <a href="{{ route('sockets') }}" class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Sockets</a>
                 <a href="{{ route('locations') }}" class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Locaties</a>
-                <a href="{{ route('invoices') }}" class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Facturen</a>
             </div>
             @endauth
 
@@ -118,7 +117,6 @@
             @auth
                 <a href="{{ route('sockets') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Sockets</a>
                 <a href="{{ route('locations') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Locaties</a>
-                <a href="{{ route('invoices') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Facturen</a>
             @endauth
         </div>
     </div>
