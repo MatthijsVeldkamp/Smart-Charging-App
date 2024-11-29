@@ -6,28 +6,36 @@
         <h2 class="text-2xl font-semibold mb-6 text-center text-gray-800 dark:text-white">Welcome</h2>
         <form method="POST" action="{{ route('login') }}" id="loginForm" class="space-y-5">
             @csrf
-            <div>
-                <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
-                <input type="email" name="email" id="email" required autofocus 
-                       class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-700 dark:text-white text-base py-2 px-3">
+            <div id="loginFields">
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
+                    <input type="email" name="email" id="email" required autofocus 
+                           class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-700 dark:text-white text-base py-2 px-3">
+                </div>
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Password</label>
+                    <input type="password" name="password" id="password" required 
+                           class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-700 dark:text-white text-base py-2 px-3">
+                </div>
+                <div id="loginButton" class="flex flex-col space-y-3">
+                    <button type="submit" 
+                            class="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:bg-indigo-500 dark:hover:bg-indigo-600">
+                        Login
+                    </button>
+                </div>
+                <div id="registrationFields" class="fade" style="display: none;">
+                    <div>
+                        <label for="confirm_password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Confirm Password</label>
+                        <input type="password" name="confirm_password" id="confirm_password" required 
+                               class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-700 dark:text-white text-base py-2 px-3">
+                    </div>
+                    <button type="submit" 
+                            class="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:bg-indigo-500 dark:hover:bg-indigo-600">
+                        Sign Up
+                    </button>
+                </div>
             </div>
-            <div>
-                <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Password</label>
-                <input type="password" name="password" id="password" required 
-                       class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-700 dark:text-white text-base py-2 px-3">
-            </div>
-            <div class="flex flex-col space-y-3">
-                <button type="submit" 
-                        class="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:bg-indigo-500 dark:hover:bg-indigo-600">
-                    Login
-                </button>
-                <button type="button" onclick="signInWithGoogle()"
-                        class="w-full py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-base font-medium text-gray-700 dark:text-white bg-white dark:bg-gray-600 hover:bg-gray-50 dark:hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 flex items-center justify-center">
-                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo" class="w-5 h-5 mr-2">
-                    Sign in with Google
-                </button>
-                <div id="googleLoader" class="loader" style="display: none;"></div>
-            </div>
+            <h1 id="toggleText" class="text-center text-sm text-gray-600 dark:text-gray-300">Don't have an account yet? <a href="#" onclick="toggleForm()" class="text-indigo-600 dark:text-indigo-400">Register instead</a></h1>
         </form>
     </div>
 </div>
@@ -82,5 +90,44 @@
                 alert('Failed to sign in with Google: ' + (error.error || error.message));
             });
     }
+
+    function toggleForm() {
+        const loginFields = document.getElementById('loginFields');
+        const registrationFields = document.getElementById('registrationFields');
+        const loginButton = document.getElementById('loginButton');
+        const toggleText = document.getElementById('toggleText');
+
+        if (registrationFields.style.display === 'none') {
+            registrationFields.style.display = 'block';
+            setTimeout(() => {
+                registrationFields.classList.add('show');
+            }, 10);
+            loginButton.style.display = 'none';
+            toggleText.innerHTML = "Already have an account? <a href='#' onclick='toggleForm()' class='text-indigo-600 dark:text-indigo-400'>Login instead</a>";
+        } else {
+            registrationFields.classList.remove('show');
+            setTimeout(() => {
+                registrationFields.style.display = 'none';
+            }, 500);
+            loginButton.style.display = 'flex';
+            toggleText.innerHTML = "Don't have an account yet? <a href='#' onclick='toggleForm()' class='text-indigo-600 dark:text-indigo-400'>Register instead</a>";
+        }
+    }
 </script>
 @endsection
+
+<style>
+    .fade {
+        transition: opacity 0.5s ease, height 0.5s ease, transform 0.5s ease;
+        opacity: 0;
+        height: 0;
+        overflow: hidden;
+        transform: scaleY(0);
+    }
+
+    .fade.show {
+        opacity: 1;
+        height: auto;
+        transform: scaleY(1);
+    }
+</style>
